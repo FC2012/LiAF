@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>proto</title>
+</head>
+<body>
+<script type="text/javascript">
+(function() {
+    'use strict';
+    console.log('start');
+    var place = document.getElementsByTagName("body");
+    var timer;
+    var count = 1;
+    var total = 1;
+
+    var Button = function (name, color, height) {
+	    this.name = name;
+	    this.color = color;
+        this.height = height;
+    };
+
+    var Floor = function (top) {
+        this.top = top;
+        this.createFloor = function () {
+            var floor = document.createElement("div");
+            var f = floor.style;
+
+            floor.setAttribute('Id','FLOOR');
+
+            f.width = '200px';
+            f.zIndex = "999991";
+            f.padding = "20px";
+            f.border = "2px solid #1f80bc";
+            f.display = "block";
+            f.opacity = "0.8";
+            f.position = "fixed";
+            f.right = "10px";
+            f.background = '#fff';
+            f.borderRadius = '15px';
+            f.top = this.top;
+
+            place[0].appendChild(floor);
+        };
+    };
+
+    Button.prototype.addButton = function () {
+        var parent  = document.getElementById("FLOOR");
+        var btn = document.createElement("div");
+        var b = btn.style;
+
+        btn.innerHTML = this.name;
+        btn.setAttribute('id',this.name);
+
+        b.width = "80%";
+        b.textAlign = "center";
+        b.cursor = "pointer";
+        b.border = "2px solid blue";
+        b.display = "block";
+        b.color = "white";
+        b.margin = "10px auto";
+        b.borderRadius = '10px';
+        b.background = this.color;
+        b.height = this.height;
+
+        parent.appendChild(btn);
+    };
+
+    function foo () {
+        var list = document.querySelectorAll('[data-control-name="invite"]');
+        var cross = document.getElementsByClassName('artdeco-toast-dismiss')[0];
+        var name = document.getElementsByClassName('artdeco-toast-message')[0];
+        list[0].style.background = "red";
+        list[0].click();
+        window.scrollTo(0, 5500);
+        console.log('total: ' + total + ' ' + 'added: ' + count + ' ' + name.textContent);
+        cross.click();
+        window.scrollTo(0, 5500);
+        count++;
+        total++;
+    }
+
+    function start () {
+        timer = setInterval(foo, 1500);
+    }
+
+    function stop (){
+        clearInterval(timer);
+        console.log('stop');
+        count = 1;
+        return count;
+    }
+
+    function runScript () {
+        var newFloor = new Floor ('50px');
+        newFloor.createFloor();
+
+        var redStopBtn = new Button ('stop','#1f80bc','30px');
+        redStopBtn.addButton();
+
+        var greenStartBtn = new Button ('start','#b581e2','30px');
+        greenStartBtn.addButton();
+
+        document.getElementById('start').addEventListener('click',start);
+        document.getElementById('stop').addEventListener('click', stop);
+    }
+
+    if (document.readyState === 'interactive') {
+        console.log('status:' + ' ' + document.readyState);
+        runScript();
+    } else {
+    	console.log('status:' + ' ' + document.readyState + '...' + ' ' + 'waiting...');
+        window.setTimeout(runScript,5000);
+        window.setTimeout(function () {
+            console.log('script running...');
+        },5500);
+    }
+})();
+</script>
+</body>
+</html>
